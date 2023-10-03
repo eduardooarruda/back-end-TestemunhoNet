@@ -18,7 +18,7 @@ class Testemunho(models.Model):
     
 
 class Comentario(models.Model):
-    testemunho = models.ForeignKey(Testemunho, related_name="comentario", on_delete=models.CASCADE)
+    testemunho = models.ForeignKey(Testemunho, related_name="comentarios", on_delete=models.CASCADE)
     autor = models.CharField(max_length=100)
     conteudo = models.CharField(max_length=600)
 
