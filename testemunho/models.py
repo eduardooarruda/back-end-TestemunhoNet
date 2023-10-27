@@ -12,6 +12,7 @@ class Testemunho(models.Model):
     class Meta:
         verbose_name = 'testemunho'
         verbose_name_plural = 'testemunhos'
+        ordering = ['id']
 
     def __str__(self) -> str:
         return self.titulo
@@ -25,7 +26,9 @@ class Comentario(models.Model):
     class Meta:
         verbose_name = 'comentário'
         verbose_name_plural = 'comentários'
-    
+        ordering = ['id'] #ordernação crescente
+        #ordering = ['-id'] #ordernação decrescente
+
     def __str__(self) -> str:
         return f'{self.autor} comentou no testemunho {self.testemunho}'
 

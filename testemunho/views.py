@@ -4,6 +4,7 @@ from rest_framework.generics import get_object_or_404
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework import mixins
 
 from .models import Testemunho, Comentario
 from .serializers import TestemunhoSerializer, ComentarioSerializer
@@ -55,11 +56,35 @@ class TestemunhoViewSet(viewsets.ModelViewSet):
     
     @action(detail=True, methods=['get'])
     def comentarios(self, request, pk=None):
+        self.pagination_class.page_size = 1
+        comentarios = Comentario.objects.filter(testemunho_id=pk)
+        page = self.paginate_queryset(comentarios)
+
+        if page is not None:
+            serializer = ComentarioSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        
         #pega o testemunho que esta chamando
-        testemunho = self.get_object()
-        serializer = ComentarioSerializer(testemunho.comentarios.all(), many=True)
+        # testemunho = self.get_object()
+
+        serializer = ComentarioSerializer(comentarios, many=True)
         return Response(serializer.data)
 
+"""
 class ComentarioViewSet(viewsets.ModelViewSet):
+    queryset = Comentario.objects.all()
+    serializer_class = ComentarioSerializer
+"""
+
+#O retrieve pega um registro
+#Destroy deleta um registro
+class ComentarioViewSet(
+    mixins.CreateModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin,
+    mixins.ListModelMixin,
+    viewsets.GenericViewSet
+    ):
     queryset = Comentario.objects.all()
     serializer_class = ComentarioSerializer
