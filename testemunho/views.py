@@ -9,6 +9,8 @@ from rest_framework import mixins
 from .models import Testemunho, Comentario
 from .serializers import TestemunhoSerializer, ComentarioSerializer
 
+# ListCreateAPIView vem junto porque não depende de nenhum id para ser executado
+# RetrieveUpdateDestroyAPIView vem junto porque depende de um id para executar a ação
 
 """
 API V1
