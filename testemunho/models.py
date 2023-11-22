@@ -45,10 +45,10 @@ class Comentario(models.Model):
 
 class Like(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
-    testemunho = models.ForeignKey(Testemunho, on_delete=models.CASCADE)
+    testemunho = models.ForeignKey(Testemunho, related_name="likes", on_delete=models.CASCADE)
 
     class Meta:
         unique_together = ('usuario', 'testemunho')
-
+    
     def __str__(self):
         return f'{self.usuario} curtiu o testemunho {self.testemunho}'
