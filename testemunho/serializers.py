@@ -8,7 +8,8 @@ class ComentarioSerializer(serializers.ModelSerializer):
             'id',
             'testemunho',
             'autor',
-            'conteudo'
+            'conteudo',
+            'comentario_pai',
         )
 
 class TestemunhoSerializer(serializers.ModelSerializer):
@@ -19,14 +20,22 @@ class TestemunhoSerializer(serializers.ModelSerializer):
     #OBS: Têm que ser detail, porque estou utilizando ViewSet
     # comentarios = serializers.HyperlinkedRelatedField(many=True, read_only=True, view_name='comentario-detail') #HyperLinked Related Field
     comentarios = serializers.PrimaryKeyRelatedField(many=True, read_only=True)#Primary Key Related Field
+    likes_count = serializers.SerializerMethodField()
+    
     class Meta:
         model = Testemunho
         fields =  (
             'id',
             'titulo',
             'conteudo', 
-            'dataCriacao', 
+            'data_criacao', 
             'autor', 
-            'comentariosAtivo',
-            'comentarios'
+            'comentarios_ativo',
+            'comentarios',
+            # 'likes',
+            'likes_count',
         )
+
+    def get_likes_count(self, obj):
+        return obj.likes.count()
+

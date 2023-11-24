@@ -5,9 +5,11 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import mixins
+# from rest_framework import permissions
 
 from .models import Testemunho, Comentario
 from .serializers import TestemunhoSerializer, ComentarioSerializer
+# from .permissions import EhSuperUsuario
 
 # ListCreateAPIView vem junto porque não depende de nenhum id para ser executado
 # RetrieveUpdateDestroyAPIView vem junto porque depende de um id para executar a ação
@@ -52,6 +54,8 @@ API V2
 """
 
 class TestemunhoViewSet(viewsets.ModelViewSet):
+    #permission_classes = (EhSuperUsuario, 
+    #                      permissions.DjangoModelPermissions, )
     queryset = Testemunho.objects.all()
     serializer_class = TestemunhoSerializer
 
