@@ -1,5 +1,5 @@
-from django.urls import path
-from rest_framework.routers import SimpleRouter
+from django.urls import path, include
+from rest_framework.routers import SimpleRouter, DefaultRouter
 
 from .views import (
     ComentarioAPIView, 
@@ -7,12 +7,16 @@ from .views import (
     TestemunhoAPIView, 
     TestemunhosAPIView,
     TestemunhoViewSet,
-    ComentarioViewSet
+    ComentarioViewSet,
+    UserViewSet
 )
 
 router = SimpleRouter()
 router.register('testemunhos', TestemunhoViewSet)
 router.register('comentarios', ComentarioViewSet)
+router.register('cadastro', UserViewSet)
+# r = DefaultRouter()
+# r.register(r'users', UserViewSet)
 
 urlpatterns = [
     path('testemunhos/', TestemunhosAPIView.as_view(), name='testemunhos'),
@@ -22,5 +26,7 @@ urlpatterns = [
     path('testemunhos/<int:testemunho_pk>/comentarios/<int:comentario_pk>/', ComentarioAPIView.as_view(), name='testemunho_comentario'),
 
     path('comentarios/', ComentariosAPIView.as_view(), name='comentarios'),
-    path('comentarios/<int:comentario_pk>/', ComentarioAPIView.as_view(), name="comentario")
+    path('comentarios/<int:comentario_pk>/', ComentarioAPIView.as_view(), name="comentario"),
+
+    # path('cadastro/', include(r.urls))
 ]

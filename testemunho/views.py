@@ -7,8 +7,11 @@ from rest_framework.response import Response
 from rest_framework import mixins
 # from rest_framework import permissions
 
+from rest_framework.decorators import action
+from django.contrib.auth.models import User
+
 from .models import Testemunho, Comentario
-from .serializers import TestemunhoSerializer, ComentarioSerializer
+from .serializers import TestemunhoSerializer, ComentarioSerializer, UserSerializer
 # from .permissions import EhSuperUsuario
 
 # ListCreateAPIView vem junto porque não depende de nenhum id para ser executado
@@ -17,6 +20,22 @@ from .serializers import TestemunhoSerializer, ComentarioSerializer
 """
 API V1
 """
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+    @action(detail=False, methods=['post'])
+    def register(self, request):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = self.perform_create(serializer)
+        return Response({'user': UserSerializer(user).data})
+
+    def perform_create(self, serializer):
+        return serializer.save()
+    
 # ListCreateAPIView: tanto lista quanto criar não depende de nenhum id
 class TestemunhosAPIView(generics.ListCreateAPIView):
     queryset = Testemunho.objects.all()

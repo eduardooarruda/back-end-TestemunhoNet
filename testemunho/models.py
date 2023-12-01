@@ -1,20 +1,20 @@
 from django.db import models
-
+from django.contrib.auth import models as modelsAuth
 # Create your models here.
 
-class Usuario(models.Model):
-    nome = models.CharField(max_length=200)
-    email = models.EmailField(unique=True)
-    senha = models.CharField(max_length=100)
+# class Usuario(models.Model):
+#     nome = models.CharField(max_length=200)
+#     email = models.EmailField(unique=True)
+#     senha = models.CharField(max_length=100)
 
-    def __str__(self):
-        return self.nome
+#     def __str__(self):
+#         return self.nome
     
 class Testemunho(models.Model):
     titulo = models.CharField(max_length=300)
     conteudo = models.CharField(max_length=3000)
     data_criacao = models.DateTimeField(auto_now=True)
-    autor = models.ForeignKey(Usuario, related_name="testemunhos", on_delete=models.CASCADE)
+    autor = models.ForeignKey(modelsAuth.User, related_name="testemunhos", on_delete=models.CASCADE)
     comentarios_ativo = models.BooleanField(default=True)
 
     class Meta:
@@ -31,7 +31,7 @@ class Comentario(models.Model):
     conteudo = models.CharField(max_length=1000)
     testemunho = models.ForeignKey(Testemunho, related_name="comentarios", on_delete=models.CASCADE)
     comentario_pai = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE)
-    autor = models.ForeignKey(Usuario, related_name="comentarios", on_delete=models.CASCADE)
+    autor = models.ForeignKey(modelsAuth.User, related_name="comentarios", on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = 'comentário'
@@ -44,7 +44,7 @@ class Comentario(models.Model):
         return f'{self.autor} comentou no testemunho {self.testemunho}'
 
 class Like(models.Model):
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(modelsAuth.User, on_delete=models.CASCADE)
     testemunho = models.ForeignKey(Testemunho, related_name="likes", on_delete=models.CASCADE)
 
     class Meta:
