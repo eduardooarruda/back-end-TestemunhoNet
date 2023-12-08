@@ -1,12 +1,12 @@
 from django.contrib import admin
-from .models import Usuario, Testemunho, Comentario, Like
+from .models import Testemunho, Comentario, Like
 
 
 
-@admin.register(Usuario)
-class UsuarioAdmin(admin.ModelAdmin):
-    list_display = ('nome', 'email')
-    search_fields = ('nome',)
+# @admin.register(Usuario)
+# class UsuarioAdmin(admin.ModelAdmin):
+#     list_display = ('nome', 'email')
+#     search_fields = ('nome',)
 
 @admin.register(Testemunho)
 class TestemunhoAdmin(admin.ModelAdmin):
